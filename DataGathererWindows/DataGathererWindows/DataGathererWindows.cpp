@@ -4,10 +4,8 @@
 	Plan is to take the data and place into a SOAP request that can be used
 	for ITSM tools (or other tools) like ServiceNow, &c.
 
-	Obviously this is Windows Specific right now. A seperate effort will be made for
-	Mac OSX and Specific Linux Distros
+	Windows Specific
 
-	Very much so a Work in Progress and I will try to work on it as I have time.
 */
 
 #include "stdafx.h"
@@ -15,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
 
 //Declarations
 void setCIComputerData();
@@ -69,14 +68,51 @@ std::vector<std::string> getCIComputerData() {
 
 void setCIComputerData() {
 
+	// Helper Variables Initialized (Do Work in the Function)
+	std::string osVersion = "";
+	std::ostringstream stream; // For assistance converting DWORD to String Output
+
+	// Output Parameter Variables (p) to be sent to getCIComputerData()
+	std::string pOSOperatingSystem = "";
+
 	// Get OS Version. IF >= Windows 8 Will Always Return Version 6 (Win8) unless Manifested. TODO: MANIFEST APPLICATION TO SUPPORT WIN 8.1 - 10
 	// see https://msdn.microsoft.com/en-us/library/windows/desktop/dn481241(v=vs.85).aspx
+
 	OSVERSIONINFO setOSVersionInfo;
 	ZeroMemory(&setOSVersionInfo, sizeof(OSVERSIONINFO));
 	setOSVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 	GetVersionEx(&setOSVersionInfo);
-	std::cout << setOSVersionInfo.dwMajorVersion << std::endl;
-	std::cout << setOSVersionInfo.dwMinorVersion << std::endl; // TODO: Concat Major and Minor Versions to x.x format
+
+	stream << setOSVersionInfo.dwMajorVersion << "." << setOSVersionInfo.dwMinorVersion << std::endl;
+	osVersion = stream.str();
+	if (osVersion == "10.0") {
+		pOSOperatingSystem = "Windows 10 - Windows Server 2016";
+	}
+	else if (osVersion == "6.3") {
+		pOSOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
+	}
+	else if (osVersion == "6.2") {
+		pOSOperatingSystem = "Windows 8 - Windows Server 2012";
+	}
+	else if (osVersion == "6.1") {
+		pOSOperatingSystem = "Windows 7 - Windows Server 2008 R2";
+	}
+	else if (osVersion == "6.0") {
+		pOSOperatingSystem = "Windows Vista - Windows Server 2008";
+	}
+	else if (osVersion == "5.2") {
+		pOSOperatingSystem = "Windows XP 64-Bit Edition - Windows Server 2003";
+	}
+	else if (osVersion == "5.1") {
+		pOSOperatingSystem = "Windows XP";
+	}
+	else if (osVersion == "5.0") {
+		pOSOperatingSystem = "Windows 2000";
+	}
+	else {
+		pOSOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
+	}
+
 }
 
 
