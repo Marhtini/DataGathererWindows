@@ -1,10 +1,13 @@
 // DataGathererWindows.cpp : Defines the entry point for the console application.
+
 /*
 	Project to develop a lightweight data collector for System Information.
 	Plan is to take the data and place into a SOAP request that can be used
 	for ITSM tools (or other tools) like ServiceNow, &c.
 
-	Windows Specific
+	Windows Specific.
+
+	NOTE: Manifest File in Resource Files needed to support versioning for any OS later than Windows 6.2
 
 */
 
@@ -21,8 +24,17 @@ void setCIComputerData();
 int main()
 {
 	setCIComputerData();
-	system("PAUSE"); // Breakpoint TEMP
+	system("PAUSE"); // Breakpoint DEBUG ONLY
 	return 0;
+
+}
+
+void temporaryPrint(std::vector<std::string> &readThisVector) {
+
+	for (int i = 0; i < readThisVector.size(); i++) {
+		std::cout << readThisVector.at(i) << ' ';
+	}
+
 }
 
 std::vector<std::string> getCIHardware() {
@@ -85,33 +97,36 @@ void setCIComputerData() {
 
 	stream << setOSVersionInfo.dwMajorVersion << "." << setOSVersionInfo.dwMinorVersion << std::endl;
 	osVersion = stream.str();
-	if (osVersion == "10.0") {
+	if (osVersion == "10.0\n") {
 		pOSOperatingSystem = "Windows 10 - Windows Server 2016";
 	}
-	else if (osVersion == "6.3") {
+	else if (osVersion == "6.3\n") {
 		pOSOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
 	}
-	else if (osVersion == "6.2") {
+	else if (osVersion == "6.2\n") {
 		pOSOperatingSystem = "Windows 8 - Windows Server 2012";
 	}
-	else if (osVersion == "6.1") {
+	else if (osVersion == "6.1\n") {
 		pOSOperatingSystem = "Windows 7 - Windows Server 2008 R2";
 	}
-	else if (osVersion == "6.0") {
+	else if (osVersion == "6.0\n") {
 		pOSOperatingSystem = "Windows Vista - Windows Server 2008";
 	}
-	else if (osVersion == "5.2") {
+	else if (osVersion == "5.2\n") {
 		pOSOperatingSystem = "Windows XP 64-Bit Edition - Windows Server 2003";
 	}
-	else if (osVersion == "5.1") {
+	else if (osVersion == "5.1\n") {
 		pOSOperatingSystem = "Windows XP";
 	}
-	else if (osVersion == "5.0") {
+	else if (osVersion == "5.0\n") {
 		pOSOperatingSystem = "Windows 2000";
 	}
 	else {
 		pOSOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
 	}
+
+	// TODO: Remove This Debug Line
+	std::cout << pOSOperatingSystem + "\n"; // DEBUG
 
 }
 
