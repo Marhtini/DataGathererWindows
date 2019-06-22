@@ -1,5 +1,0 @@
-﻿  DataGathererWindows.cpp
-c:\users\martinezjr\desktop\datagathererwindows\datagathererwindows\datagathererwindows.cpp(77): warning C4996: 'GetVersionExW': was declared deprecated
-  c:\program files (x86)\windows kits\10\include\10.0.15063.0\um\sysinfoapi.h(445): note: see declaration of 'GetVersionExW'
-  DataGathererWindows.vcxproj -> C:\Users\martinezjr\Desktop\DataGathererWindows\Debug\DataGathererWindows.exe
-  DataGathererWindows.vcxproj -> C:\Users\martinezjr\Desktop\DataGathererWindows\Debug\DataGathererWindows.pdb (Partial PDB)
