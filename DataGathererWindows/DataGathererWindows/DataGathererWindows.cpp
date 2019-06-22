@@ -12,42 +12,94 @@
 */
 
 #include "stdafx.h"
-#include <Windows.h>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <sstream>
+#include "resources.h" // Tons of Resources
 
-//Declarations
-void setCIComputerData();
 
 int main()
 {
-	setCIComputerData();
-	system("PAUSE"); // Breakpoint DEBUG ONLY
+	// Initialize Master Data Vector
+
+	std::vector<std::vector<std::string>> masterCIDataVector;
+	setCIComputerData(masterCIDataVector);
+	
 	return 0;
 
 }
 
-void temporaryPrint(std::vector<std::string> &readThisVector) {
+void setCIComputerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+	// Collect all vectors from other data and put into master vector
 
-	for (int i = 0; i < readThisVector.size(); i++) {
-		std::cout << readThisVector.at(i) << ' ';
-	}
+	getCIHardwareData(pMasterCIDataVector);
+	getCIComputerData(pMasterCIDataVector);
+	getCIWinVersionData(pMasterCIDataVector);
+	getCIWinServerData(pMasterCIDataVector);
+	getCIDiskData(pMasterCIDataVector);
+	getCIProcessData(pMasterCIDataVector);
+	getCINetworkData(pMasterCIDataVector);
+	getCIModelData(pMasterCIDataVector);
 
 }
 
-std::vector<std::string> getCIHardware() {
+std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
-	std::string networkAdapterDefaultGateway;
-	std::vector<std::string> ciHardwareVector;
-	ciHardwareVector.push_back(networkAdapterDefaultGateway);
+	// Variables
+	DWORD dwSize = 0;
+	DWORD dwReturnValue = 0; // Error checking
+	std::vector<std::string> ciHardwareVector; // Returnable Vector
 
+/*	TODO: Type Conversion for all members of GetAdaptersAddresses() 
+	See: http://www.rapideuphoria.com/getadaptersaddresses.ew
+	std::string 
+		adapterName,
+		firstUnicastAddress,
+		firstMulticastAddress,
+		firstDnsServerAddress,
+		// dnsSuffix, TODO: PWCHAR to String
+		// description, TODO: PWCHAR to String
+		// friendlyName, TODO: PWCHAR to String
+		physicalAddress,
+		ddnsEnabled,
+		dhcpv4Enabled,
+		noMulticast,
+		netbiosOverTcpEnabled,
+		ipv4Enabled,
+		ipv6Enabled,
+		mtu,
+		ifType,
+		operationStatus,
+		firstWinsServerAddress,
+		firstGatewayAddress,
+		luid,
+		dhcpv4Server,
+		networkGuid,
+		connectionType,
+		tunnelType,
+		dhcpv6Server,
+		dhcpv6ClientDuid;
+
+	// For converting LPSTR to String
+	char cWsaAddressBuffer[64] = { 0 };
+	DWORD dwSizeOfString = sizeof(cWsaAddressBuffer);
+	LPSTR lDhcpv4Server;
+
+
+	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
+	PIP_ADAPTER_ADDRESSES pAddresses = NULL;
+	ULONG outputBuffer = 15000000; // Buffer Size (Can expand if needed)
+	pAddresses = (IP_ADAPTER_ADDRESSES *)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
+	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
+	
+	// Start Filling Values
+	adapterName = pAddresses->AdapterName;
+	dhcpv4Server = WSAAddressToStringA(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);
+
+	std::cout << lDhcpv4Server;
+*/
 	return ciHardwareVector;
 
 }
 
-std::vector<std::string> getCIComputerData() {
+std::vector<std::string> getCIComputerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string osOperatingSystem,
 		osVersion,
@@ -78,16 +130,19 @@ std::vector<std::string> getCIComputerData() {
 
 }
 
-void setCIComputerData() {
 
+std::vector<std::string> getCIWinVersionData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 	// Helper Variables Initialized (Do Work in the Function)
 	std::string osVersion = "";
 	std::ostringstream stream; // For assistance converting DWORD to String Output
 
+	// Vector Init
+	std::vector<std::string> ciWinVersionDataVector;
+
 	// Output Parameter Variables (p) to be sent to getCIComputerData()
 	std::string pOSOperatingSystem = "";
 
-	// Get OS Version. IF >= Windows 8 Will Always Return Version 6 (Win8) unless Manifested. TODO: MANIFEST APPLICATION TO SUPPORT WIN 8.1 - 10
+	// Get OS Version. IF >= Windows 8 Will Always Return Version 6 (Win8) unless Manifested.
 	// see https://msdn.microsoft.com/en-us/library/windows/desktop/dn481241(v=vs.85).aspx
 
 	OSVERSIONINFO setOSVersionInfo;
@@ -125,13 +180,13 @@ void setCIComputerData() {
 		pOSOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
 	}
 
-	// TODO: Remove This Debug Line
-	std::cout << pOSOperatingSystem + "\n"; // DEBUG
+	ciWinVersionDataVector.push_back(pOSOperatingSystem);
 
+	return ciWinVersionDataVector;
 }
 
 
-std::vector<std::string> getCIWinServerData() {
+std::vector<std::string> getCIWinServerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string hostname,
 		dnsDomain,
@@ -156,7 +211,8 @@ std::vector<std::string> getCIWinServerData() {
 
 }
 
-std::vector<std::string> getCIDiskData() {
+
+std::vector<std::string> getCIDiskData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string diskType,
 		diskDescription,
@@ -177,7 +233,7 @@ std::vector<std::string> getCIDiskData() {
 
 }
 
-std::vector<std::string> getCIProcessData() {
+std::vector<std::string> getCIProcessData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string runningProcessNames,
 		runningProcessCommand,
@@ -200,7 +256,7 @@ std::vector<std::string> getCIProcessData() {
 
 }
 
-std::vector<std::string> getCINetworkData() {
+std::vector<std::string> getCINetworkData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string networkAdapterName,
 		networkAdapterIP,
@@ -221,7 +277,7 @@ std::vector<std::string> getCINetworkData() {
 
 }
 
-std::vector<std::string> getCIData() {
+std::vector<std::string> getCIModelData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
 
 	std::string modelID;
 	std::vector<std::string> ciDataVector;
