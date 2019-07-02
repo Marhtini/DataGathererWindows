@@ -21,6 +21,7 @@ int main()
 
 	std::vector<std::vector<std::string>> masterCIDataVector;
 	setCIComputerData(masterCIDataVector);
+
 	
 	return 0;
 
@@ -47,8 +48,8 @@ std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>>
 	DWORD dwReturnValue = 0; // Error checking
 	std::vector<std::string> ciHardwareVector; // Returnable Vector
 
-/*	TODO: Type Conversion for all members of GetAdaptersAddresses() 
-	See: http://www.rapideuphoria.com/getadaptersaddresses.ew
+// TODO: Type Conversion for all members of GetAdaptersAddresses() 
+// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
 	std::string 
 		adapterName,
 		firstUnicastAddress,
@@ -80,7 +81,7 @@ std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>>
 	// For converting LPSTR to String
 	char cWsaAddressBuffer[64] = { 0 };
 	DWORD dwSizeOfString = sizeof(cWsaAddressBuffer);
-	LPSTR lDhcpv4Server;
+	LPWSTR lDhcpv4Server = NULL;
 
 
 	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
@@ -91,10 +92,9 @@ std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>>
 	
 	// Start Filling Values
 	adapterName = pAddresses->AdapterName;
-	dhcpv4Server = WSAAddressToStringA(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);
-
-	std::cout << lDhcpv4Server;
-*/
+	//dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
+	
+	// std::cout << lDhcpv4Server; TODO: See Above ^ ^
 	return ciHardwareVector;
 
 }
