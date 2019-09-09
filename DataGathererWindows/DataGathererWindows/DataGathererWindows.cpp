@@ -17,31 +17,35 @@
 
 int main()
 {
-	// Initialize Master Data Vector
 
-	std::vector<std::vector<std::string>> masterCIDataVector;
-	setCIComputerData(masterCIDataVector);
-
+	setCIComputerData();
 	
 	return 0;
 
 }
 
-void setCIComputerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
-	// Collect all vectors from other data and put into master vector
+void setCIComputerData(){
 
-	getCIHardwareData(pMasterCIDataVector);
-	getCIComputerData(pMasterCIDataVector);
-	getCIWinVersionData(pMasterCIDataVector);
-	getCIWinServerData(pMasterCIDataVector);
-	getCIDiskData(pMasterCIDataVector);
-	getCIProcessData(pMasterCIDataVector);
-	getCINetworkData(pMasterCIDataVector);
-	getCIModelData(pMasterCIDataVector);
+	std::vector<std::string> pMasterCIHardwareDataVector; // Where is this called?
+	std::vector<std::string> pMasterCIComputerDataVector;
+	std::vector<std::string> pMasterCIWinVersionDataVector;
+	std::vector<std::string> pMasterCIWinServerDataVector;
+	std::vector<std::string> pMasterCIDiskDataVector;
+	std::vector<std::string> pMasterCIProcessDataVector;
+	std::vector<std::string> pMasterCINetworkDataVector;
+	std::vector<std::string> pMasterCIModelDataVector;
+
+	getCIComputerData(pMasterCIComputerDataVector);
+	getCIWinVersionData(pMasterCIWinVersionDataVector);
+	getCIWinServerData(pMasterCIWinServerDataVector);
+	getCIDiskData(pMasterCIDiskDataVector);
+	getCIProcessData(pMasterCIProcessDataVector);
+	getCINetworkData(pMasterCINetworkDataVector);
+	getCIModelData(pMasterCIModelDataVector);
 
 }
 
-std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHardwareDataVector) {
 
 	// Variables
 	DWORD dwSize = 0;
@@ -99,7 +103,7 @@ std::vector<std::string> getCIHardwareData(std::vector<std::vector<std::string>>
 
 }
 
-std::vector<std::string> getCIComputerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIComputerData(std::vector<std::string> pMasterCIComputerDataVector) {
 
 	std::string osOperatingSystem,
 		osVersion,
@@ -131,7 +135,7 @@ std::vector<std::string> getCIComputerData(std::vector<std::vector<std::string>>
 }
 
 
-std::vector<std::string> getCIWinVersionData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIWinVersionData(std::vector<std::string> pMasterCIWinVersionDataVector) {
 	// Helper Variables Initialized (Do Work in the Function)
 	std::string osVersion = "";
 	std::ostringstream stream; // For assistance converting DWORD to String Output
@@ -186,7 +190,7 @@ std::vector<std::string> getCIWinVersionData(std::vector<std::vector<std::string
 }
 
 
-std::vector<std::string> getCIWinServerData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIWinServerData(std::vector<std::string> pMasterCIWinServerDataVector) {
 
 	std::string hostname,
 		dnsDomain,
@@ -212,7 +216,7 @@ std::vector<std::string> getCIWinServerData(std::vector<std::vector<std::string>
 }
 
 
-std::vector<std::string> getCIDiskData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIDiskData(std::vector<std::string> pMasterCIDiskDataVector) {
 
 	std::string diskType,
 		diskDescription,
@@ -233,8 +237,7 @@ std::vector<std::string> getCIDiskData(std::vector<std::vector<std::string>> pMa
 
 }
 
-std::vector<std::string> getCIProcessData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
-
+std::vector<std::string> getCIProcessData(std::vector<std::string> pMasterCIProcessDataVector){
 	std::string runningProcessNames,
 		runningProcessCommand,
 		runningProcessConnectsTo,
@@ -256,7 +259,7 @@ std::vector<std::string> getCIProcessData(std::vector<std::vector<std::string>> 
 
 }
 
-std::vector<std::string> getCINetworkData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCINetworkData(std::vector<std::string> pMasterCINetworkDataVector) {
 
 	std::string networkAdapterName,
 		networkAdapterIP,
@@ -277,7 +280,7 @@ std::vector<std::string> getCINetworkData(std::vector<std::vector<std::string>> 
 
 }
 
-std::vector<std::string> getCIModelData(std::vector<std::vector<std::string>> pMasterCIDataVector) {
+std::vector<std::string> getCIModelData(std::vector<std::string> pMasterCIModelDataVector) {
 
 	std::string modelID;
 	std::vector<std::string> ciDataVector;
@@ -285,4 +288,8 @@ std::vector<std::string> getCIModelData(std::vector<std::vector<std::string>> pM
 
 	return ciDataVector;
 
+}
+
+void setCIComputerData(std::vector<std::string> pMasterCIHardwareDataVector, std::vector<std::string> pMasterCIComputerDataVector, std::vector<std::string> pMasterCIWinVersionDataVector, std::vector<std::string> pMasterCIWinServerDataVector, std::vector<std::string> pMasterCIDiskDataVector, std::vector<std::string> pMasterCIProcessDataVector, std::vector<std::string> pMasterCINetworkDataVector, std::vector<std::string> pMasterCIModelDataVector)
+{
 }
