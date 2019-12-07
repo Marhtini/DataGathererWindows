@@ -43,6 +43,7 @@ void setCIComputerData(){
 	getCINetworkData(pMasterCINetworkDataVector);
 	getCIModelData(pMasterCIModelDataVector);
 
+	
 }
 
 std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHardwareDataVector) {
@@ -288,8 +289,4 @@ std::vector<std::string> getCIModelData(std::vector<std::string> pMasterCIModelD
 
 	return ciDataVector;
 
-}
-
-void setCIComputerData(std::vector<std::string> pMasterCIHardwareDataVector, std::vector<std::string> pMasterCIComputerDataVector, std::vector<std::string> pMasterCIWinVersionDataVector, std::vector<std::string> pMasterCIWinServerDataVector, std::vector<std::string> pMasterCIDiskDataVector, std::vector<std::string> pMasterCIProcessDataVector, std::vector<std::string> pMasterCINetworkDataVector, std::vector<std::string> pMasterCIModelDataVector)
-{
 }
