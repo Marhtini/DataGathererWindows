@@ -1,18 +1,3 @@
 ﻿  DataGathererWindows.cpp
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(165,25): warning C4244: 'argument': conversion from 'DWORD' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(166,28): warning C4244: 'argument': conversion from 'DWORD' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(167,24): warning C4244: 'argument': conversion from 'DWORD' to 'const _Elem', possible loss of data
-          with
-          [
-              _Elem=char
-          ]
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(184,2): warning C4996: 'GetVersionExW': was declared deprecated
+D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(187,2): warning C4996: 'GetVersionExW': was declared deprecated
   DataGathererWindows.vcxproj -> D:\Development\DataGathererWindows\DataGathererWindows\x64\Debug\DataGathererWindows.exe

@@ -162,9 +162,9 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 
 	// Start Filling Values
 	pCdc.adapterName = pAddresses->AdapterName;
-	pCdc.cpuCount = sysinfo.dwNumberOfProcessors;
-	pCdc.cpuPageSize = sysinfo.dwPageSize;
-	pCdc.cpuType = sysinfo.dwProcessorType;
+	pCdc.cpuCount = std::to_string(sysinfo.dwNumberOfProcessors);
+	pCdc.cpuPageSize = std::to_string(sysinfo.dwPageSize);
+
 	// pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
 
 }
