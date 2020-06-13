@@ -16,6 +16,9 @@
 
 struct ComputerDataContainer {
 
+	// Constructor
+	ComputerDataContainer() {};
+
 	std::string
 		adapterName,
 		firstUnicastAddress,
@@ -88,7 +91,7 @@ struct ComputerDataContainer {
 		getCIWinVersionData(pCdc);
 		
 	}
-
+	
 };
 
 
@@ -105,13 +108,12 @@ int main()
 
 }
 
-
 void getCIHardwareData(ComputerDataContainer& pCdc) {
 
 	// Variables
 	DWORD dwSize{ 0 };
 	DWORD dwReturnValue{ 0 }; // Error checking
-
+	 
 	// TODO: Type Conversion for all members of GetAdaptersAddresses() 
 	// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
 	
