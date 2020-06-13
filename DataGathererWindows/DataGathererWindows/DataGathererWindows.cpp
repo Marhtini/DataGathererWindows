@@ -14,17 +14,7 @@
 #include "stdafx.h"
 #include "resources.h" // Tons of Resources
 
-
-int main()
-{
-
-	setCIComputerData();
-	
-	return 0;
-
-}
-
-void setCIComputerData(){
+struct ComputerDataContainer {
 
 	std::vector<std::string> pMasterCIHardwareDataVector; // Where is this called?
 	std::vector<std::string> pMasterCIComputerDataVector;
@@ -35,16 +25,29 @@ void setCIComputerData(){
 	std::vector<std::string> pMasterCINetworkDataVector;
 	std::vector<std::string> pMasterCIModelDataVector;
 
-	getCIComputerData(pMasterCIComputerDataVector);
-	getCIWinVersionData(pMasterCIWinVersionDataVector);
-	getCIWinServerData(pMasterCIWinServerDataVector);
-	getCIDiskData(pMasterCIDiskDataVector);
-	getCIProcessData(pMasterCIProcessDataVector);
-	getCINetworkData(pMasterCINetworkDataVector);
-	getCIModelData(pMasterCIModelDataVector);
+	void setCIComputerData() {
+		getCIComputerData(pMasterCIComputerDataVector);
+		getCIWinVersionData(pMasterCIWinVersionDataVector);
+		getCIWinServerData(pMasterCIWinServerDataVector);
+		getCIDiskData(pMasterCIDiskDataVector);
+		getCIProcessData(pMasterCIProcessDataVector);
+		getCINetworkData(pMasterCINetworkDataVector);
+		getCIModelData(pMasterCIModelDataVector);
+	}
 
+};
+
+
+int main()
+{
+
+	ComputerDataContainer cdc;
+	cdc.setCIComputerData();
 	
+	return 0;
+
 }
+
 
 std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHardwareDataVector) {
 
