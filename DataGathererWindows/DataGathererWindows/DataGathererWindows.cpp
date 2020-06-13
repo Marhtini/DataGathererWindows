@@ -16,49 +16,7 @@
 
 struct ComputerDataContainer {
 
-	std::vector<std::string> pMasterCIHardwareDataVector; // Where is this called?
-	std::vector<std::string> pMasterCIComputerDataVector;
-	std::vector<std::string> pMasterCIWinVersionDataVector;
-	std::vector<std::string> pMasterCIWinServerDataVector;
-	std::vector<std::string> pMasterCIDiskDataVector;
-	std::vector<std::string> pMasterCIProcessDataVector;
-	std::vector<std::string> pMasterCINetworkDataVector;
-	std::vector<std::string> pMasterCIModelDataVector;
-
-	void setCIComputerData() {
-		getCIComputerData(pMasterCIComputerDataVector);
-		getCIWinVersionData(pMasterCIWinVersionDataVector);
-		getCIWinServerData(pMasterCIWinServerDataVector);
-		getCIDiskData(pMasterCIDiskDataVector);
-		getCIProcessData(pMasterCIProcessDataVector);
-		getCINetworkData(pMasterCINetworkDataVector);
-		getCIModelData(pMasterCIModelDataVector);
-	}
-
-};
-
-
-int main()
-{
-
-	ComputerDataContainer cdc;
-	cdc.setCIComputerData();
-	
-	return 0;
-
-}
-
-
-std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHardwareDataVector) {
-
-	// Variables
-	DWORD dwSize = 0;
-	DWORD dwReturnValue = 0; // Error checking
-	std::vector<std::string> ciHardwareVector; // Returnable Vector
-
-// TODO: Type Conversion for all members of GetAdaptersAddresses() 
-// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
-	std::string 
+	std::string
 		adapterName,
 		firstUnicastAddress,
 		firstMulticastAddress,
@@ -84,7 +42,79 @@ std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHar
 		connectionType,
 		tunnelType,
 		dhcpv6Server,
-		dhcpv6ClientDuid;
+		dhcpv6ClientDuid,
+		osOperatingSystem,
+		osVersion,
+		osServicePack,
+		osName,
+		cpuName,
+		cpuManufacturer,
+		cpuSpeed, // MHZ
+		cpuCount,
+		cpuCoreCount,
+		cpuCoreThread,
+		ram, // MB
+		hostname,
+		dnsDomain,
+		osDomain,
+		assignedTo,
+		department,
+		description,
+		manufacturer,
+		serial,
+		diskType,
+		diskDescription,
+		diskSpace, // GB Total
+		freeSpace, // GB Free
+		diskName, // C: D: &c
+		volumeSerialNumber,
+		runningProcessNames,
+		runningProcessCommand,
+		runningProcessConnectsTo,
+		runningProcessListensOn,
+		runningProcessType,
+		runningProcessPID,
+		runningProcessParams,
+		networkAdapterName,
+		networkAdapterIP,
+		networkAdapterMAC,
+		networkAdapterNetmask,
+		networkAdapterDHCPEnabled,
+		networkAdapterVendor,
+		modelID;
+
+	void setCIComputerData(ComputerDataContainer &pCdc) {
+		getCIHardwareData(pCdc);
+		getCIWinVersionData(pCdc);
+		
+	}
+
+};
+
+
+int main()
+{
+
+	ComputerDataContainer cdc;
+
+	ComputerDataContainer *pCdc { &cdc };
+
+	cdc.setCIComputerData(*pCdc);
+
+	return 0;
+
+}
+
+
+void getCIHardwareData(ComputerDataContainer& pCdc) {
+
+	// Variables
+	DWORD dwSize{ 0 };
+	DWORD dwReturnValue{ 0 }; // Error checking
+
+	// TODO: Type Conversion for all members of GetAdaptersAddresses() 
+	// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
+	
 
 	// For converting LPSTR to String
 	char cWsaAddressBuffer[64] = { 0 };
@@ -99,56 +129,18 @@ std::vector<std::string> getCIHardwareData(std::vector<std::string> pMasterCIHar
 	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
 	
 	// Start Filling Values
-	adapterName = pAddresses->AdapterName;
+	pCdc.adapterName = pAddresses->AdapterName;
 	//dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
 	
 	// std::cout << lDhcpv4Server; TODO: See Above ^ ^
-	return ciHardwareVector;
-
-}
-
-std::vector<std::string> getCIComputerData(std::vector<std::string> pMasterCIComputerDataVector) {
-
-	std::string osOperatingSystem,
-		osVersion,
-		osServicePack,
-		osName,
-		cpuName,
-		cpuManufacturer,
-		cpuSpeed, // MHZ
-		cpuCount,
-		cpuCoreCount,
-		cpuCoreThread,
-		ram; // MB
-
-	std::vector<std::string> ciComputerDataVector;
-	ciComputerDataVector.push_back(osOperatingSystem);
-	ciComputerDataVector.push_back(osVersion);
-	ciComputerDataVector.push_back(osServicePack);
-	ciComputerDataVector.push_back(osName);
-	ciComputerDataVector.push_back(cpuName);
-	ciComputerDataVector.push_back(cpuManufacturer);
-	ciComputerDataVector.push_back(cpuSpeed);
-	ciComputerDataVector.push_back(cpuCount);
-	ciComputerDataVector.push_back(cpuCoreCount);
-	ciComputerDataVector.push_back(cpuCoreThread);
-	ciComputerDataVector.push_back(ram);
-
-	return ciComputerDataVector;
 
 }
 
 
-std::vector<std::string> getCIWinVersionData(std::vector<std::string> pMasterCIWinVersionDataVector) {
+void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	// Helper Variables Initialized (Do Work in the Function)
-	std::string osVersion = "";
+	std::string osVersion{ "" };
 	std::ostringstream stream; // For assistance converting DWORD to String Output
-
-	// Vector Init
-	std::vector<std::string> ciWinVersionDataVector;
-
-	// Output Parameter Variables (p) to be sent to getCIComputerData()
-	std::string pOSOperatingSystem = "";
 
 	// Get OS Version. IF >= Windows 8 Will Always Return Version 6 (Win8) unless Manifested.
 	// see https://msdn.microsoft.com/en-us/library/windows/desktop/dn481241(v=vs.85).aspx
@@ -159,137 +151,34 @@ std::vector<std::string> getCIWinVersionData(std::vector<std::string> pMasterCIW
 	GetVersionEx(&setOSVersionInfo);
 
 	stream << setOSVersionInfo.dwMajorVersion << "." << setOSVersionInfo.dwMinorVersion << std::endl;
-	osVersion = stream.str();
+	pCdc.osVersion = stream.str();
+
 	if (osVersion == "10.0\n") {
-		pOSOperatingSystem = "Windows 10 - Windows Server 2016";
+		pCdc.osOperatingSystem = "Windows 10 - Windows Server 2016";
 	}
 	else if (osVersion == "6.3\n") {
-		pOSOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
+		pCdc.osOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
 	}
 	else if (osVersion == "6.2\n") {
-		pOSOperatingSystem = "Windows 8 - Windows Server 2012";
+		pCdc.osOperatingSystem = "Windows 8 - Windows Server 2012";
 	}
 	else if (osVersion == "6.1\n") {
-		pOSOperatingSystem = "Windows 7 - Windows Server 2008 R2";
+		pCdc.osOperatingSystem = "Windows 7 - Windows Server 2008 R2";
 	}
 	else if (osVersion == "6.0\n") {
-		pOSOperatingSystem = "Windows Vista - Windows Server 2008";
+		pCdc.osOperatingSystem = "Windows Vista - Windows Server 2008";
 	}
 	else if (osVersion == "5.2\n") {
-		pOSOperatingSystem = "Windows XP 64-Bit Edition - Windows Server 2003";
+		pCdc.osOperatingSystem = "Windows XP 64-Bit Edition - Windows Server 2003";
 	}
 	else if (osVersion == "5.1\n") {
-		pOSOperatingSystem = "Windows XP";
+		pCdc.osOperatingSystem = "Windows XP";
 	}
 	else if (osVersion == "5.0\n") {
-		pOSOperatingSystem = "Windows 2000";
+		pCdc.osOperatingSystem = "Windows 2000";
 	}
 	else {
-		pOSOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
+		pCdc.osOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
 	}
-
-	ciWinVersionDataVector.push_back(pOSOperatingSystem);
-
-	return ciWinVersionDataVector;
-}
-
-
-std::vector<std::string> getCIWinServerData(std::vector<std::string> pMasterCIWinServerDataVector) {
-
-	std::string hostname,
-		dnsDomain,
-		osDomain,
-		assignedTo,
-		department,
-		description,
-		manufacturer,
-		serial;
-
-	std::vector<std::string> ciWinServerDataVector;
-	ciWinServerDataVector.push_back(hostname);
-	ciWinServerDataVector.push_back(dnsDomain);
-	ciWinServerDataVector.push_back(osDomain);
-	ciWinServerDataVector.push_back(assignedTo);
-	ciWinServerDataVector.push_back(department);
-	ciWinServerDataVector.push_back(description);
-	ciWinServerDataVector.push_back(manufacturer);
-	ciWinServerDataVector.push_back(serial);
-
-	return ciWinServerDataVector;
-
-}
-
-
-std::vector<std::string> getCIDiskData(std::vector<std::string> pMasterCIDiskDataVector) {
-
-	std::string diskType,
-		diskDescription,
-		diskSpace, // GB Total
-		freeSpace, // GB Free
-		diskName, // C: D: &c
-		volumeSerialNumber;
-
-	std::vector<std::string> ciDiskDataVector;
-	ciDiskDataVector.push_back(diskType);
-	ciDiskDataVector.push_back(diskDescription);
-	ciDiskDataVector.push_back(diskSpace);
-	ciDiskDataVector.push_back(freeSpace);
-	ciDiskDataVector.push_back(diskName);
-	ciDiskDataVector.push_back(volumeSerialNumber);
-
-	return ciDiskDataVector;
-
-}
-
-std::vector<std::string> getCIProcessData(std::vector<std::string> pMasterCIProcessDataVector){
-	std::string runningProcessNames,
-		runningProcessCommand,
-		runningProcessConnectsTo,
-		runningProcessListensOn,
-		runningProcessType,
-		runningProcessPID,
-		runningProcessParams;
-
-	std::vector<std::string> ciProcessDataVector;
-	ciProcessDataVector.push_back(runningProcessNames);
-	ciProcessDataVector.push_back(runningProcessCommand);
-	ciProcessDataVector.push_back(runningProcessConnectsTo);
-	ciProcessDataVector.push_back(runningProcessListensOn);
-	ciProcessDataVector.push_back(runningProcessType);
-	ciProcessDataVector.push_back(runningProcessPID);
-	ciProcessDataVector.push_back(runningProcessParams);
-
-	return ciProcessDataVector;
-
-}
-
-std::vector<std::string> getCINetworkData(std::vector<std::string> pMasterCINetworkDataVector) {
-
-	std::string networkAdapterName,
-		networkAdapterIP,
-		networkAdapterMAC,
-		networkAdapterNetmask,
-		networkAdapterDHCPEnabled,
-		networkAdapterVendor;
-
-	std::vector<std::string> ciNetworkDataVector;
-	ciNetworkDataVector.push_back(networkAdapterName);
-	ciNetworkDataVector.push_back(networkAdapterIP);
-	ciNetworkDataVector.push_back(networkAdapterMAC);
-	ciNetworkDataVector.push_back(networkAdapterNetmask);
-	ciNetworkDataVector.push_back(networkAdapterDHCPEnabled);
-	ciNetworkDataVector.push_back(networkAdapterVendor);
-
-	return ciNetworkDataVector;
-
-}
-
-std::vector<std::string> getCIModelData(std::vector<std::string> pMasterCIModelDataVector) {
-
-	std::string modelID;
-	std::vector<std::string> ciDataVector;
-	ciDataVector.push_back(modelID);
-
-	return ciDataVector;
 
 }
