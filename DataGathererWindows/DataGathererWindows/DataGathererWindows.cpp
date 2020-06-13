@@ -18,6 +18,8 @@ struct ComputerDataContainer {
 
 	// Constructor
 	ComputerDataContainer() {};
+	// Destructor
+	~ComputerDataContainer() {};
 
 	std::string
 		adapterName,
@@ -133,8 +135,6 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 	// Start Filling Values
 	pCdc.adapterName = pAddresses->AdapterName;
 	//dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
-	
-	// std::cout << lDhcpv4Server; TODO: See Above ^ ^
 
 }
 
@@ -155,28 +155,28 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	stream << setOSVersionInfo.dwMajorVersion << "." << setOSVersionInfo.dwMinorVersion << std::endl;
 	pCdc.osVersion = stream.str();
 
-	if (osVersion == "10.0\n") {
+	if (pCdc.osVersion == "10.0\n") {
 		pCdc.osOperatingSystem = "Windows 10 - Windows Server 2016";
 	}
-	else if (osVersion == "6.3\n") {
+	else if (pCdc.osVersion == "6.3\n") {
 		pCdc.osOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
 	}
-	else if (osVersion == "6.2\n") {
+	else if (pCdc.osVersion == "6.2\n") {
 		pCdc.osOperatingSystem = "Windows 8 - Windows Server 2012";
 	}
-	else if (osVersion == "6.1\n") {
+	else if (pCdc.osVersion == "6.1\n") {
 		pCdc.osOperatingSystem = "Windows 7 - Windows Server 2008 R2";
 	}
-	else if (osVersion == "6.0\n") {
+	else if (pCdc.osVersion == "6.0\n") {
 		pCdc.osOperatingSystem = "Windows Vista - Windows Server 2008";
 	}
-	else if (osVersion == "5.2\n") {
+	else if (pCdc.osVersion == "5.2\n") {
 		pCdc.osOperatingSystem = "Windows XP 64-Bit Edition - Windows Server 2003";
 	}
-	else if (osVersion == "5.1\n") {
+	else if (pCdc.osVersion == "5.1\n") {
 		pCdc.osOperatingSystem = "Windows XP";
 	}
-	else if (osVersion == "5.0\n") {
+	else if (pCdc.osVersion == "5.0\n") {
 		pCdc.osOperatingSystem = "Windows 2000";
 	}
 	else {
