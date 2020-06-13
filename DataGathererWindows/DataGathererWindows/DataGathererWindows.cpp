@@ -58,6 +58,8 @@ struct ComputerDataContainer {
 		cpuCount,
 		cpuCoreCount,
 		cpuCoreThread,
+		cpuPageSize,
+		cpuType,
 		ram, // MB
 		hostname,
 		dnsDomain,
@@ -101,9 +103,7 @@ int main()
 {
 
 	ComputerDataContainer cdc;
-
 	ComputerDataContainer *pCdc { &cdc };
-
 	cdc.setCIComputerData(*pCdc);
 
 	return 0;
@@ -115,10 +115,9 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 	// Variables
 	DWORD dwSize{ 0 };
 	DWORD dwReturnValue{ 0 }; // Error checking
-	 
+
 	// TODO: Type Conversion for all members of GetAdaptersAddresses() 
 	// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
-	
 
 	// For converting LPSTR to String
 	char cWsaAddressBuffer[64] = { 0 };
@@ -129,12 +128,44 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
 	PIP_ADAPTER_ADDRESSES pAddresses = NULL;
 	ULONG outputBuffer = 15000000; // Buffer Size (Can expand if needed)
-	pAddresses = (IP_ADAPTER_ADDRESSES *)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
+	pAddresses = (IP_ADAPTER_ADDRESSES*)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
 	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
-	
+
+	// OEM ID, Processors, Processor Type, Page Size, Min/Max Application Address, Processor Mask
+	// Structure for storing system info 
+	// https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
+	SYSTEM_INFO sysinfo;
+	GetSystemInfo(&sysinfo); // Populate structure
+
+	// Processor Architecture Check (dwOemId)
+	if (sysinfo.dwOemId == 9) {
+		pCdc.cpuManufacturer = "x64 (AMD or Intel)";
+	}
+	else if (sysinfo.dwOemId == 5) {
+		pCdc.cpuManufacturer = "ARM";
+	}
+	else if (sysinfo.dwOemId == 12) {
+		pCdc.cpuManufacturer = "ARM64";
+	}
+	else if (sysinfo.dwOemId == 6) {
+		pCdc.cpuManufacturer = "Intel Itanium-based";
+	}
+	else if (sysinfo.dwOemId == 0) {
+		pCdc.cpuManufacturer = "x86";
+	}
+	else if (sysinfo.dwOemId == 0xffff) {
+		pCdc.cpuManufacturer = "Unknown Architecture";
+	}
+	else {
+		std::cout << "Error in architecture detection. getCIHardwareData().\n";
+	}
+
 	// Start Filling Values
 	pCdc.adapterName = pAddresses->AdapterName;
-	//dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
+	pCdc.cpuCount = sysinfo.dwNumberOfProcessors;
+	pCdc.cpuPageSize = sysinfo.dwPageSize;
+	pCdc.cpuType = sysinfo.dwProcessorType;
+	// pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
 
 }
 
