@@ -55,7 +55,7 @@ void getCIProcessorData(ComputerDataContainer& pCdc) {
 		pCdc.cpuManufacturer = "Unknown Architecture";
 	}
 	else {
-		std::cout << "Error in architecture detection. getCIProcessorData().\n";
+		pCdc.cpuManufacturer = "Error in architecture detection.";
 	}
 
 	// Start Filling Values
