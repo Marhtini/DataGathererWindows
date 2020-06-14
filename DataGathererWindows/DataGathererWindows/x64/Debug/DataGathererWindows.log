@@ -1,3 +1,4 @@
 ﻿  DataGathererWindows.cpp
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(187,2): warning C4996: 'GetVersionExW': was declared deprecated
+D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(104,2): warning C4996: 'GetVersionExW': was declared deprecated
+D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(146): warning C4700: uninitialized local variable 'cbNeeded' used
   DataGathererWindows.vcxproj -> D:\Development\DataGathererWindows\DataGathererWindows\x64\Debug\DataGathererWindows.exe

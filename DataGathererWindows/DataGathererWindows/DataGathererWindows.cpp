@@ -12,91 +12,7 @@
 */
 
 #include "stdafx.h"
-#include "resources.h" // Tons of Resources
-
-struct ComputerDataContainer {
-
-	// Constructor
-	ComputerDataContainer() {};
-	// Destructor
-	~ComputerDataContainer() {};
-
-	std::string
-		adapterName,
-		firstUnicastAddress,
-		firstMulticastAddress,
-		firstDnsServerAddress,
-		// dnsSuffix, TODO: PWCHAR to String
-		// description, TODO: PWCHAR to String
-		// friendlyName, TODO: PWCHAR to String
-		physicalAddress,
-		ddnsEnabled,
-		dhcpv4Enabled,
-		noMulticast,
-		netbiosOverTcpEnabled,
-		ipv4Enabled,
-		ipv6Enabled,
-		mtu,
-		ifType,
-		operationStatus,
-		firstWinsServerAddress,
-		firstGatewayAddress,
-		luid,
-		dhcpv4Server,
-		networkGuid,
-		connectionType,
-		tunnelType,
-		dhcpv6Server,
-		dhcpv6ClientDuid,
-		osOperatingSystem,
-		osVersion,
-		osServicePack,
-		osName,
-		cpuName,
-		cpuManufacturer,
-		cpuSpeed, // MHZ
-		cpuCount,
-		cpuCoreCount,
-		cpuCoreThread,
-		cpuPageSize,
-		cpuType,
-		ram, // MB
-		hostname,
-		dnsDomain,
-		osDomain,
-		assignedTo,
-		department,
-		description,
-		manufacturer,
-		serial,
-		diskType,
-		diskDescription,
-		diskSpace, // GB Total
-		freeSpace, // GB Free
-		diskName, // C: D: &c
-		volumeSerialNumber,
-		runningProcessNames,
-		runningProcessCommand,
-		runningProcessConnectsTo,
-		runningProcessListensOn,
-		runningProcessType,
-		runningProcessPID,
-		runningProcessParams,
-		networkAdapterName,
-		networkAdapterIP,
-		networkAdapterMAC,
-		networkAdapterNetmask,
-		networkAdapterDHCPEnabled,
-		networkAdapterVendor,
-		modelID;
-
-	void setCIComputerData(ComputerDataContainer &pCdc) {
-		getCIHardwareData(pCdc);
-		getCIWinVersionData(pCdc);
-		
-	}
-	
-};
+#include "resources.h" // Library inclusions, ComputerDataContainer Definition
 
 
 int main()
@@ -110,6 +26,7 @@ int main()
 
 }
 
+
 void getCIHardwareData(ComputerDataContainer& pCdc) {
 
 	// Variables
@@ -121,13 +38,13 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 
 	// For converting LPSTR to String
 	char cWsaAddressBuffer[64] = { 0 };
-	DWORD dwSizeOfString = sizeof(cWsaAddressBuffer);
-	LPWSTR lDhcpv4Server = NULL;
+	DWORD dwSizeOfString{ sizeof(cWsaAddressBuffer) };
+	LPWSTR lDhcpv4Server{ NULL };
 
 
 	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
-	PIP_ADAPTER_ADDRESSES pAddresses = NULL;
-	ULONG outputBuffer = 15000000; // Buffer Size (Can expand if needed)
+	PIP_ADAPTER_ADDRESSES pAddresses{ NULL };
+	ULONG outputBuffer{ 15000000 }; // Buffer Size (Can expand if needed)
 	pAddresses = (IP_ADAPTER_ADDRESSES*)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
 	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
 
@@ -164,6 +81,7 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 	pCdc.adapterName = pAddresses->AdapterName;
 	pCdc.cpuCount = std::to_string(sysinfo.dwNumberOfProcessors);
 	pCdc.cpuPageSize = std::to_string(sysinfo.dwPageSize);
+	pCdc.cpuMask = std::to_string(sysinfo.dwActiveProcessorMask);
 
 	// pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
 
