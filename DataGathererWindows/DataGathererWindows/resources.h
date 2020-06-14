@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "stdafx.h"
 #include <Psapi.h>
-#include <format>
+
 #pragma comment(lib, "Iphlpapi.lib")
 
 struct ComputerDataContainer;
