@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "stdafx.h"
 #include <Psapi.h>
+#include <format>
 #pragma comment(lib, "Iphlpapi.lib")
 
 struct ComputerDataContainer;
@@ -52,13 +53,12 @@ struct ComputerDataContainer {
 		dhcpv6ClientDuid,
 		osOperatingSystem,
 		osVersion,
-		osServicePack,
-		osName,
+		osBuildNumber,
+		osServicePack, // TODO: WCHAR[128] to String
 		cpuName,
 		cpuManufacturer,
 		cpuMask,
 		cpuSpeed, // MHZ
-		cpuCount,
 		cpuCoreCount,
 		cpuCoreThread,
 		cpuPageSize,

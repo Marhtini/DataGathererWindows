@@ -59,7 +59,7 @@ void getCIProcessorData(ComputerDataContainer& pCdc) {
 	}
 
 	// Start Filling Values
-	pCdc.cpuCount = std::to_string(sysinfo.dwNumberOfProcessors);
+	pCdc.cpuCoreCount = std::to_string(sysinfo.dwNumberOfProcessors);
 	pCdc.cpuPageSize = std::to_string(sysinfo.dwPageSize);
 	pCdc.cpuMask = std::to_string(sysinfo.dwActiveProcessorMask);
 
@@ -112,6 +112,19 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 		pCdc.osOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
 	}
 
+	pCdc.osBuildNumber = std::to_string(setOSVersionInfo.dwBuildNumber);
+
+	if (setOSVersionInfo.szCSDVersion == NULL) {
+		pCdc.osServicePack = "No Service Pack Installed.";
+	}
+	/* TODO: Convert WCHAR[128] to std::string
+	else if (setOSVersionInfo.szCSDVersion != NULL) {
+		pCdc.osServicePack = setOSVersionInfo.szCSDVersion;
+	}
+	*/
+	else {
+		std::cout << "Error identifying service pack." << std::endl;
+	}
 }
 
 void getCIAdapterData(ComputerDataContainer& pCdc) {
@@ -136,5 +149,13 @@ void getCIAdapterData(ComputerDataContainer& pCdc) {
 	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
 
 	pCdc.adapterName = pAddresses->AdapterName;
+
+}
+
+void getCIRam(ComputerDataContainer& pCdc) {
+
+	std::string tempRam{};
+	PULONGLONG memoryInKB{};
+	GetPhysicallyInstalledSystemMemory(memoryInKB); // TODO: Convert from PULONGLONG to String. Wish C++20 worked :( could use std::format.
 
 }
