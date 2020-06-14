@@ -17,6 +17,8 @@ struct ComputerDataContainer;
 void getCIProcessorData(ComputerDataContainer& pCdc);
 void getCIWinVersionData(ComputerDataContainer& pCdc);
 void getCIAdapterData(ComputerDataContainer& pCdc);
+void getCIRam(ComputerDataContainer& pCdc);
+void getCISerialNumber(ComputerDataContainer& pCdc);
 
 struct ComputerDataContainer {
 
@@ -27,12 +29,7 @@ struct ComputerDataContainer {
 
 	std::string
 		adapterName,
-		firstUnicastAddress,
-		firstMulticastAddress,
 		firstDnsServerAddress,
-		// dnsSuffix, TODO: PWCHAR to String
-		// description, TODO: PWCHAR to String
-		// friendlyName, TODO: PWCHAR to String
 		physicalAddress,
 		ddnsEnabled,
 		dhcpv4Enabled,
@@ -55,7 +52,7 @@ struct ComputerDataContainer {
 		osOperatingSystem,
 		osVersion,
 		osBuildNumber,
-		osServicePack, // TODO: WCHAR[128] to String
+		osServicePack,
 		cpuName,
 		cpuManufacturer,
 		cpuMask,
@@ -64,7 +61,7 @@ struct ComputerDataContainer {
 		cpuCoreThread,
 		cpuPageSize,
 		cpuType,
-		ram, // MB
+		ram, // KB
 		hostname,
 		dnsDomain,
 		osDomain,
@@ -87,6 +84,7 @@ struct ComputerDataContainer {
 		runningProcessPID,
 		runningProcessParams,
 		networkAdapterName,
+		networkAdapterType,
 		networkAdapterIP,
 		networkAdapterMAC,
 		networkAdapterNetmask,
@@ -102,3 +100,15 @@ struct ComputerDataContainer {
 	}
 
 };
+
+std::string wtos(wchar_t* pStr){
+
+	/* 
+		WCHAR to String Converter, thank god for that.
+	*/
+
+	std::string newStr;
+	while (*pStr)
+		newStr += (char)*pStr++;
+	return newStr;
+}

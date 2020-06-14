@@ -12,7 +12,7 @@
 */
 
 #include "stdafx.h"
-#include "resources.h" // Library inclusions, ComputerDataContainer Definition
+#include "resources.h" // Library inclusions, ComputerDataContainer Definition, wtos()
 
 
 int main()
@@ -62,8 +62,6 @@ void getCIProcessorData(ComputerDataContainer& pCdc) {
 	pCdc.cpuCoreCount = std::to_string(sysinfo.dwNumberOfProcessors);
 	pCdc.cpuPageSize = std::to_string(sysinfo.dwPageSize);
 	pCdc.cpuMask = std::to_string(sysinfo.dwActiveProcessorMask);
-
-	// pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString);   //TODO: LNK2019 Error, unresolved external symbol __imp_WSAAddressToStringW 
 
 }
 
@@ -117,11 +115,9 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	if (setOSVersionInfo.szCSDVersion[0] == '\0') { // If first WCHAR* element is Null Byte...
 		pCdc.osServicePack = "No Service Pack Installed.";
 	}
-	/* TODO: Convert WCHAR[128] to std::string
 	else if (setOSVersionInfo.szCSDVersion != NULL) {
-		pCdc.osServicePack = setOSVersionInfo.szCSDVersion;
+		pCdc.osServicePack = wtos(setOSVersionInfo.szCSDVersion);
 	}
-	*/
 	else {
 		pCdc.osServicePack = "Error identifying service pack.";
 	}
@@ -149,6 +145,11 @@ void getCIAdapterData(ComputerDataContainer& pCdc) {
 	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
 
 	pCdc.adapterName = pAddresses->AdapterName;
+	pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString); // TODO, lots of data still needs to be pulled out of pAddresses Struct
+	pCdc.dnsDomain = wtos(pAddresses->DnsSuffix);
+	pCdc.networkAdapterType = wtos(pAddresses->FriendlyName);
+	pCdc.networkAdapterName = wtos(pAddresses->Description);
+
 
 }
 
