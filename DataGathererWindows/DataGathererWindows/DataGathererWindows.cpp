@@ -114,7 +114,7 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 
 	pCdc.osBuildNumber = std::to_string(setOSVersionInfo.dwBuildNumber);
 
-	if (setOSVersionInfo.szCSDVersion == NULL) {
+	if (setOSVersionInfo.szCSDVersion[0] == '\0') { // If first WCHAR* element is Null Byte...
 		pCdc.osServicePack = "No Service Pack Installed.";
 	}
 	/* TODO: Convert WCHAR[128] to std::string
@@ -123,7 +123,7 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	}
 	*/
 	else {
-		std::cout << "Error identifying service pack." << std::endl;
+		pCdc.osServicePack = "Error identifying service pack.";
 	}
 }
 
@@ -157,5 +157,15 @@ void getCIRam(ComputerDataContainer& pCdc) {
 	std::string tempRam{};
 	PULONGLONG memoryInKB{};
 	GetPhysicallyInstalledSystemMemory(memoryInKB); // TODO: Convert from PULONGLONG to String. Wish C++20 worked :( could use std::format.
+
+}
+
+void getCIHostname(ComputerDataContainer& pCdc) {
+
+	const int HOSTNAME_LENGTH{ 255 };
+	char hostname[HOSTNAME_LENGTH];
+	gethostname(hostname, HOSTNAME_LENGTH);
+	
+	pCdc.hostname = std::string(hostname);
 
 }

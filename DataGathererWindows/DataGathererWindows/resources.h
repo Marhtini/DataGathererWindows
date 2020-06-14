@@ -9,8 +9,10 @@
 #include <stdlib.h>
 #include "stdafx.h"
 #include <Psapi.h>
+#include <WS2tcpip.h>
 
 #pragma comment(lib, "Iphlpapi.lib")
+#pragma comment(lib, "Ws2_32.lib")
 
 struct ComputerDataContainer;
 void getCIProcessorData(ComputerDataContainer& pCdc);
