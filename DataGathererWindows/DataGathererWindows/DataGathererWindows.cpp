@@ -27,26 +27,7 @@ int main()
 }
 
 
-void getCIHardwareData(ComputerDataContainer& pCdc) {
-
-	// Variables
-	DWORD dwSize{ 0 };
-	DWORD dwReturnValue{ 0 }; // Error checking
-
-	// TODO: Type Conversion for all members of GetAdaptersAddresses() 
-	// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
-
-	// For converting LPSTR to String
-	char cWsaAddressBuffer[64] = { 0 };
-	DWORD dwSizeOfString{ sizeof(cWsaAddressBuffer) };
-	LPWSTR lDhcpv4Server{ NULL };
-
-
-	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
-	PIP_ADAPTER_ADDRESSES pAddresses{ NULL };
-	ULONG outputBuffer{ 15000000 }; // Buffer Size (Can expand if needed)
-	pAddresses = (IP_ADAPTER_ADDRESSES*)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
-	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
+void getCIProcessorData(ComputerDataContainer& pCdc) {
 
 	// OEM ID, Processors, Processor Type, Page Size, Min/Max Application Address, Processor Mask
 	// Structure for storing system info 
@@ -74,11 +55,10 @@ void getCIHardwareData(ComputerDataContainer& pCdc) {
 		pCdc.cpuManufacturer = "Unknown Architecture";
 	}
 	else {
-		std::cout << "Error in architecture detection. getCIHardwareData().\n";
+		std::cout << "Error in architecture detection. getCIProcessorData().\n";
 	}
 
 	// Start Filling Values
-	pCdc.adapterName = pAddresses->AdapterName;
 	pCdc.cpuCount = std::to_string(sysinfo.dwNumberOfProcessors);
 	pCdc.cpuPageSize = std::to_string(sysinfo.dwPageSize);
 	pCdc.cpuMask = std::to_string(sysinfo.dwActiveProcessorMask);
@@ -131,5 +111,30 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	else {
 		pCdc.osOperatingSystem = "ERROR: Version Unknown or Older than Windows 2000";
 	}
+
+}
+
+void getCIAdapterData(ComputerDataContainer& pCdc) {
+ 
+	// Variables
+	DWORD dwSize{ 0 };
+	DWORD dwReturnValue{ 0 }; // Error checking
+
+	// TODO: Type Conversion for all members of GetAdaptersAddresses() 
+	// See: http://www.rapideuphoria.com/getadaptersaddresses.ew
+
+	// For converting LPSTR to String
+	char cWsaAddressBuffer[64] = { 0 };
+	DWORD dwSizeOfString{ sizeof(cWsaAddressBuffer) };
+	LPWSTR lDhcpv4Server{ NULL };
+
+
+	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
+	PIP_ADAPTER_ADDRESSES pAddresses{ NULL };
+	ULONG outputBuffer{ 15000000 }; // Buffer Size (Can expand if needed)
+	pAddresses = (IP_ADAPTER_ADDRESSES*)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
+	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
+
+	pCdc.adapterName = pAddresses->AdapterName;
 
 }

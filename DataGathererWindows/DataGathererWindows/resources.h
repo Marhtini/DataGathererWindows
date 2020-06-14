@@ -12,9 +12,9 @@
 #pragma comment(lib, "Iphlpapi.lib")
 
 struct ComputerDataContainer;
-void getCIHardwareData(ComputerDataContainer& pCdc);
+void getCIProcessorData(ComputerDataContainer& pCdc);
 void getCIWinVersionData(ComputerDataContainer& pCdc);
-SYSTEM_INFO prepareSysinfo();
+void getCIAdapterData(ComputerDataContainer& pCdc);
 
 struct ComputerDataContainer {
 
@@ -94,8 +94,9 @@ struct ComputerDataContainer {
 		modelID;
 
 	void setCIComputerData(ComputerDataContainer& pCdc) {
-		getCIHardwareData(pCdc);
+		getCIProcessorData(pCdc);
 		getCIWinVersionData(pCdc);
+		getCIAdapterData(pCdc);
 
 	}
 
