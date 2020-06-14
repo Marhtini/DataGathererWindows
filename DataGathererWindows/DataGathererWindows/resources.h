@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <string>
 #include <winsock2.h>
 #include <iphlpapi.h>

@@ -169,3 +169,13 @@ void getCIHostname(ComputerDataContainer& pCdc) {
 	pCdc.hostname = std::string(hostname);
 
 }
+
+void getCISerialNumber(ComputerDataContainer& pCdc) {
+
+	/*
+		getCISerialNumber(): Query the SMBIOS table and pull the Serial Number
+
+	
+	*/
+
+}
