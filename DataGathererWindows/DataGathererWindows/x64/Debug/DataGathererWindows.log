@@ -1,3 +1,0 @@
-﻿  DataGathererWindows.cpp
-D:\Development\DataGathererWindows\DataGathererWindows\DataGathererWindows\DataGathererWindows.cpp(80,2): warning C4996: 'GetVersionExW': was declared deprecated
-  DataGathererWindows.vcxproj -> D:\Development\DataGathererWindows\DataGathererWindows\x64\Debug\DataGathererWindows.exe
