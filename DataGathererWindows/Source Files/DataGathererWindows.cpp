@@ -35,26 +35,28 @@ void getCIProcessorData(ComputerDataContainer& pCdc) {
 	GetSystemInfo(&sysinfo); // Populate structure
 
 	// Processor Architecture Check (dwOemId)
-	if (sysinfo.dwOemId == 9) {
-		pCdc.cpuManufacturer = "x64 (AMD or Intel)";
-	}
-	else if (sysinfo.dwOemId == 5) {
-		pCdc.cpuManufacturer = "ARM";
-	}
-	else if (sysinfo.dwOemId == 12) {
-		pCdc.cpuManufacturer = "ARM64";
-	}
-	else if (sysinfo.dwOemId == 6) {
-		pCdc.cpuManufacturer = "Intel Itanium-based";
-	}
-	else if (sysinfo.dwOemId == 0) {
-		pCdc.cpuManufacturer = "x86";
-	}
-	else if (sysinfo.dwOemId == 0xffff) {
-		pCdc.cpuManufacturer = "Unknown Architecture";
-	}
-	else {
-		pCdc.cpuManufacturer = "Error in architecture detection.";
+	switch (sysinfo.dwOemId) {
+		case 9:
+			pCdc.cpuManufacturer = "x64 (AMD or Intel)";
+			break;
+		case 5:
+			pCdc.cpuManufacturer = "ARM";
+			break;
+		case 12:
+			pCdc.cpuManufacturer = "ARM64";
+			break;
+		case 6:
+			pCdc.cpuManufacturer = "Intel Itanium-based";
+			break;
+		case 0:
+			pCdc.cpuManufacturer = "x86";
+			break;
+		case 0xffff:
+			pCdc.cpuManufacturer = "Unknown Architecture";
+			break;
+		default:
+			pCdc.cpuManufacturer = "Error in architecture detection.";
+			break;
 	}
 
 	// Start Filling Values
