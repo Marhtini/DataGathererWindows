@@ -115,7 +115,7 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	if (setOSVersionInfo.szCSDVersion[0] == '\0') { // If first WCHAR* element is Null Byte...
 		pCdc.osServicePack = "No Service Pack Installed.";
 	}
-	else if (setOSVersionInfo.szCSDVersion != NULL) {
+	else if (setOSVersionInfo.szCSDVersion != nullptr) {
 		pCdc.osServicePack = wtos(setOSVersionInfo.szCSDVersion);
 	}
 	else {
@@ -135,17 +135,17 @@ void getCIAdapterData(ComputerDataContainer& pCdc) {
 	// For converting LPSTR to String
 	char cWsaAddressBuffer[64] = { 0 };
 	DWORD dwSizeOfString{ sizeof(cWsaAddressBuffer) };
-	LPWSTR lDhcpv4Server{ NULL };
+	LPWSTR lDhcpv4Server{ nullptr };
 
 
 	// Getting PIP_ADAPTER_ADDRESSES data structure for parsing
-	PIP_ADAPTER_ADDRESSES pAddresses{ NULL };
+	PIP_ADAPTER_ADDRESSES pAddresses{ nullptr };
 	ULONG outputBuffer{ 15000000 }; // Buffer Size (Can expand if needed)
 	pAddresses = (IP_ADAPTER_ADDRESSES*)HeapAlloc(GetProcessHeap(), 0, (outputBuffer));
-	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, NULL, pAddresses, &outputBuffer);
+	dwReturnValue = GetAdaptersAddresses(AF_UNSPEC, GAA_FLAG_INCLUDE_PREFIX, nullptr, pAddresses, &outputBuffer);
 
 	pCdc.adapterName = pAddresses->AdapterName;
-	pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, NULL, lDhcpv4Server, &dwSizeOfString); // TODO, lots of data still needs to be pulled out of pAddresses Struct
+	pCdc.dhcpv4Server = WSAAddressToStringW(pAddresses->Dhcpv4Server.lpSockaddr, 14, nullptr, lDhcpv4Server, &dwSizeOfString); // TODO, lots of data still needs to be pulled out of pAddresses Struct
 	pCdc.dnsDomain = wtos(pAddresses->DnsSuffix);
 	pCdc.networkAdapterType = wtos(pAddresses->FriendlyName);
 	pCdc.networkAdapterName = wtos(pAddresses->Description);
