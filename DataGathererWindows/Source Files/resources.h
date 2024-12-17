@@ -92,10 +92,10 @@ struct ComputerDataContainer {
 		networkAdapterVendor,
 		modelID;
 
-	void setCIComputerData(ComputerDataContainer& pCdc) {
-		getCIProcessorData(pCdc);
-		getCIWinVersionData(pCdc);
-		getCIAdapterData(pCdc);
+	void setCIComputerData() {
+		getCIProcessorData(*this);
+		getCIWinVersionData(*this);
+		getCIAdapterData(*this);
 
 	}
 

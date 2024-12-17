@@ -19,8 +19,7 @@ int main()
 {
 
 	ComputerDataContainer cdc;
-	ComputerDataContainer *pCdc { &cdc };
-	cdc.setCIComputerData(*pCdc);
+	cdc.setCIComputerData();
 
 	return 0;
 
