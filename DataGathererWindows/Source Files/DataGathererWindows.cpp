@@ -75,16 +75,21 @@ void getCIWinVersionData(ComputerDataContainer& pCdc) {
 	// Get OS Version. IF >= Windows 8 Will Always Return Version 6 (Win8) unless Manifested.
 	// see https://msdn.microsoft.com/en-us/library/windows/desktop/dn481241(v=vs.85).aspx
 
-	OSVERSIONINFO setOSVersionInfo;
-	ZeroMemory(&setOSVersionInfo, sizeof(OSVERSIONINFO));
-	setOSVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&setOSVersionInfo);
+	OSVERSIONINFOEX setOSVersionInfo;
+	ZeroMemory(&setOSVersionInfo, sizeof(OSVERSIONINFOEX));
+	setOSVersionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+	GetVersionEx((OSVERSIONINFO*)&setOSVersionInfo);
 
 	stream << setOSVersionInfo.dwMajorVersion << "." << setOSVersionInfo.dwMinorVersion << std::endl;
 	pCdc.osVersion = stream.str();
 
 	if (pCdc.osVersion == "10.0\n") {
-		pCdc.osOperatingSystem = "Windows 10 - Windows Server 2016";
+		if (setOSVersionInfo.dwBuildNumber >= 22000) {
+			pCdc.osOperatingSystem = "Windows 11";
+		}
+		else {
+			pCdc.osOperatingSystem = "Windows 10 - Windows Server 2016";
+		}
 	}
 	else if (pCdc.osVersion == "6.3\n") {
 		pCdc.osOperatingSystem = "Windows 8.1 - Windows Server 2012 R2";
